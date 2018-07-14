@@ -1,0 +1,11 @@
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          # redirect goes to /login/oauth2/code/<registration>
+          github:
+            provider: github
+            client-id: de76b26d8aeb264815c6
+            client-secret: 2a9fee778bb66d59d0544e08dc1a069179733245
+            scope: user repo
