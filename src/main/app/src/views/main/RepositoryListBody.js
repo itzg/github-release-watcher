@@ -70,6 +70,7 @@ class RepositoryListBody extends Component {
 
     let valA, valB;
     switch (sortBy) {
+      default:
       case 'repo':
         valA = (a.owner + '/' + a.name).toLowerCase();
         valB = (b.owner + '/' + b.name).toLowerCase();

@@ -93,7 +93,7 @@ public class GithubServiceImpl implements GithubService {
                 repositories.getNodes().add(parseRepository(jsonNode));
             });
         } catch (NullPointerException e) {
-            log.warn("Failed to parse {}", reposNode);
+            log.warn("Failed to parse {}", reposNode, e);
         }
 
         return repositories;
@@ -120,15 +120,18 @@ public class GithubServiceImpl implements GithubService {
 
     private Release parseRelease(Repository repository, JsonNode releaseNode) {
         final Release release = new Release();
-        release.setName(releaseNode.get("name").asText());
+        release.setName(releaseNode.path("name").asText());
         try {
-            release.setTag(releaseNode.get("tag").get("name").asText());
+            release.setTag(releaseNode.path("tag").path("name").asText());
         } catch (NullPointerException e) {
             log.warn("Bad tag in {}/{}", repository.getOwner(), repository.getName());
         }
         try {
             // since a JsonNode can't parse dates itself, we'll use the object mapper
-            release.setPublishedAt(objectMapper.treeToValue(releaseNode.get("publishedAt"), Date.class));
+            final JsonNode publishedAt = releaseNode.get("publishedAt");
+            if (publishedAt != null) {
+                release.setPublishedAt(objectMapper.treeToValue(publishedAt, Date.class));
+            }
         } catch (JsonProcessingException e) {
             throw new RuntimeException("Failed to parse publishedAt date", e);
         }
@@ -137,9 +140,8 @@ public class GithubServiceImpl implements GithubService {
     }
 
     /**
-     *
      * @param connectionNode a JSON node with pageInfo and totalCount fields
-     * @param pageable the {@link Pageable} to populate
+     * @param pageable       the {@link Pageable} to populate
      */
     private void parsePageInfo(JsonNode connectionNode, Pageable<?> pageable) {
         pageable.setTotalCount(connectionNode.get("totalCount").asInt(0));

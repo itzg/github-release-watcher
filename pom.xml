@@ -22,7 +22,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>9</java.version>
-        <frontendSrcDir>${project.basedir}/src/main/app</frontendSrcDir>
+        <frontend-src-dir>${project.basedir}/src/main/app</frontend-src-dir>
         <node.version>v9.2.0</node.version>
         <yarn.version>v1.7.0</yarn.version>
         <frontend-maven-plugin.version>1.6</frontend-maven-plugin.version>
@@ -62,6 +62,7 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <optional>true</optional>
+            <version>1.18.2</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -90,7 +91,7 @@
                 <configuration>
                     <nodeVersion>${node.version}</nodeVersion>
                     <yarnVersion>${yarn.version}</yarnVersion>
-                    <workingDirectory>${frontendSrcDir}</workingDirectory>
+                    <workingDirectory>${frontend-src-dir}</workingDirectory>
                     <installDirectory>${project.build.directory}</installDirectory>
                 </configuration>
 
@@ -139,7 +140,7 @@
                             <outputDirectory>${project.build.outputDirectory}/static</outputDirectory>
                             <resources>
                                 <resource>
-                                    <directory>${frontendSrcDir}/build</directory>
+                                    <directory>${frontend-src-dir}/build</directory>
                                     <filtering>false</filtering>
                                 </resource>
                             </resources>
